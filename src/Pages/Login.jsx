@@ -9,8 +9,7 @@ const Login = () => {
     const handleLogin=(e)=>{
         e.preventDefault()
 
-        localStorage.setItem('authtoken','001');
-        window.location.reload()
+        
     }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

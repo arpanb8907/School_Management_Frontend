@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 const Register = () => {
 
@@ -9,12 +9,38 @@ const Register = () => {
   const [address,setaddress] = useState('');
   const [password,setpassword] = useState('');
   const [email,setemail] = useState(''); 
+  const navigate = useNavigate();
 
-  const handleRegister = (e)=>{
+  const handleRegister = async (e)=>{
     e.preventDefault()
 
-        localStorage.setItem('authtoken','001');
-        window.location.reload()
+    const userData = {name,fname,contact,address,password,email}
+
+    try {
+      const response = await fetch('http://localhost:5000/api/register',{
+        method : 'POST',
+        headers:{
+          'Content-Type' : 'application/json'
+        },
+
+        body: JSON.stringify(userData)
+
+      });
+
+      const data = await response.json();
+
+      if(response.status === 201){
+        alert('Registration successful');
+        navigate('/login')
+
+      }
+      else{
+        alert(data.message)
+      }
+    } catch (error) {
+      console.error(error);
+      
+    }
   }
 
   return (
