@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+//import jwt_decode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
+
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -7,13 +10,22 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // Mock user data (replace with real user data)
+
+  const token  = localStorage.getItem('token')
+  let uname = "John Doe"
+
+  if(token){
+    let decoded = jwtDecode(token);
+    uname = decoded.username
+  }
+
   const user = {
-    name: "John Doe",
+    name: uname,
     profilePic: "https://via.placeholder.com/40", // Replace with actual user profile picture URL
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
     navigate("/login"); // Redirect to login page
     window.location.reload();
   };
@@ -48,13 +60,13 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink
+          {(uname=== "John Doe" ) && <NavLink
             to="/dashboard"
             className="cursor-pointer hover:underline"
             activeClassName="font-bold underline"
           >
             Dashboard
-          </NavLink>
+          </NavLink>}
         </li>
       </ul>
 
@@ -74,12 +86,12 @@ const Navbar = () => {
 
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded shadow-lg w-48">
-            <NavLink
+            {(uname=== "John Doe" ) && <NavLink
               to="/dashboard"
               className="block px-4 py-2 hover:bg-gray-100"
             >
               Dashboard
-            </NavLink>
+            </NavLink>}
             <button
               onClick={handleLogout}
               className="w-full text-left px-4 py-2 hover:bg-gray-100"
