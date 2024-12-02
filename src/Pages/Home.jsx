@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const menuItems = [
-    { name: "Attendance", icon: "fas fa-user-check" },
-    { name: "Class List", icon: "fas fa-list" },
-    { name: "Timetable", icon: "fas fa-calendar-alt" },
-    { name: "Exam", icon: "fas fa-edit" },
-    { name: "Calendar", icon: "fas fa-calendar" },
-    { name: "News", icon: "fas fa-newspaper" },
-    { name: "Homework", icon: "fas fa-book" },
-    { name: "Exam Result", icon: "fas fa-chart-line" },
-    { name: "Settings", icon: "fas fa-cog" },
-    { name: "Configuration", icon: "fas fa-tools" },
+    { name: "Attendance", icon: "fas fa-user-check", route: "/attendance" },
+    { name: "Class List", icon: "fas fa-list", route: "/class-list" },
+    { name: "Timetable", icon: "fas fa-calendar-alt", route: "/timetable" },
+    { name: "Exam", icon: "fas fa-edit", route: "/exam" },
+    { name: "Calendar", icon: "fas fa-calendar", route: "/calendar" },
+    { name: "News", icon: "fas fa-newspaper", route: "/news" },
+    { name: "Homework", icon: "fas fa-book", route: "/homework" },
+    { name: "Exam Result", icon: "fas fa-chart-line", route: "/exam-result" },
+    { name: "Settings", icon: "fas fa-cog", route: "/settings" },
+    { name: "Configuration", icon: "fas fa-tools", route: "/configuration" },
   ];
 
   const token = localStorage.getItem("token");
@@ -82,6 +82,7 @@ const Home = () => {
             {menuItems.map((item, index) => (
               <div
                 key={index}
+                onClick={()=> navigate(item.route)}
                 className="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition transform hover:scale-105 cursor-pointer"
               >
                 <div className="w-12 h-12 mb-3 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full">

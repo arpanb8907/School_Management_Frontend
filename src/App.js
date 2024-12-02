@@ -7,6 +7,7 @@ import Student_Dashboard from './Pages/Student_Dashboard';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Footer from './Components/Footer';
+import Homework from './Home_Items/Homework';
 
 const App = () => (
   <Router>
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/dashboard/student" element={<Student_Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path ="/Homework" element={<Homework/>}/>
         </Routes>
       </div>
       {/* Footer stays at the bottom */}

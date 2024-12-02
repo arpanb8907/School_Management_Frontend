@@ -12,7 +12,7 @@ const Navbar = () => {
   // Mock user data (replace with real user data)
 
   const token  = localStorage.getItem('token')
-  let uname = "John Doe"
+  let uname = "Guest"
 
   if(token){
     let decoded = jwtDecode(token);
@@ -60,7 +60,7 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          {(uname=== "John Doe" ) && <NavLink
+          {(uname=== "Guest" ) && <NavLink
             to="/dashboard"
             className="cursor-pointer hover:underline"
             activeClassName="font-bold underline"
@@ -86,18 +86,18 @@ const Navbar = () => {
 
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded shadow-lg w-48">
-            {(uname=== "John Doe" ) && <NavLink
+            {(uname=== "Guest" ) && <NavLink
               to="/dashboard"
               className="block px-4 py-2 hover:bg-gray-100"
             >
               Dashboard
             </NavLink>}
-            <button
+            {(uname!== "Guest") && <button
               onClick={handleLogout}
               className="w-full text-left px-4 py-2 hover:bg-gray-100"
             >
               Logout
-            </button>
+            </button>}
           </div>
         )}
       </div>
