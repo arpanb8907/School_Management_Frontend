@@ -54,20 +54,20 @@ const Navbar = () => {
           <NavLink
             to="/"
             className="cursor-pointer hover:underline"
-            activeClassName="font-bold underline"
+            //activeClassName="font-bold underline"
           >
             Home
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           {(uname=== "Guest" ) && <NavLink
             to="/dashboard"
             className="cursor-pointer hover:underline"
-            activeClassName="font-bold underline"
+            //activeClassName="font-bold underline"
           >
             Dashboard
           </NavLink>}
-        </li>
+        </li> */}
       </ul>
 
       {/* Profile Dropdown */}

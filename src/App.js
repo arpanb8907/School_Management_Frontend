@@ -8,6 +8,7 @@ import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Footer from './Components/Footer';
 import Homework from './Home_Items/Homework';
+import ClassList from './Home_Items/ClassList';
 
 const App = () => (
   <Router>
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path ="/Homework" element={<Homework/>}/>
+          <Route path='/ClassList' element={<ClassList/>}/>
         </Routes>
       </div>
       {/* Footer stays at the bottom */}

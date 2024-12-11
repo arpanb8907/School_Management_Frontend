@@ -1,79 +1,91 @@
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student"); // Default role
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const userdata = { email, password };
-    console.log("hi")
-    
     if (!email || !password) {
-      alert("Please enter both email and password")
+      alert("Please enter both email and password.");
       return;
     }
 
+    const endpoint = role === "admin" ? "/api/admin/login" : "/api/student/login";
+
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userdata),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-      if(response.status!==200){
-        alert(data.message || "Something went wrong")
-      }
-      if(response.status===200){
-        localStorage.setItem('token' , data.token)
-        
-        navigate('/')
 
-        console.log("Logged in in succesfully")
+      if (response.status !== 200) {
+        alert(data.message || "Login failed.");
+        return;
       }
 
-      else{
-        alert("Invalid credentials")
-      }
+      // Store the token and role in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", role);
+
+      navigate(role === "admin" ? "/admin-dashboard" : "/");
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Login error:", error);
     }
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-96">
         <h1 className="text-2xl font-bold mb-4 text-center">
-          Login as Student
+          Login as {role === "admin" ? "Admin" : "Student"}
         </h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="email">
+            <label htmlFor="role" className="block text-gray-700 mb-2">
+              Select Role
+            </label>
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 mb-2">
               Email
             </label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="password">
+            <label htmlFor="password" className="block text-gray-700 mb-2">
               Password
             </label>
             <input
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setpassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your password"
             />
@@ -85,13 +97,14 @@ const Login = () => {
             Login
           </button>
         </form>
-
-        <p className="mt-4">
-          Not a student?{" "}
-          <Link to="/register" className="text-blue-500">
-            Register here
-          </Link>
-        </p>
+        {role === "student" && (
+          <p className="mt-4">
+            Not a student?{" "}
+            <Link to="/register" className="text-blue-500">
+              Register here
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );
