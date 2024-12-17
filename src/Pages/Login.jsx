@@ -22,16 +22,24 @@ const Login = () => {
     const endpoint = role === "admin" ? "/api/admin/login" : "/api/student/login";
 
     try {
-      const response = await fetch(
-        `https://school-management-backend-2k5j.onrender.com${endpoint}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      // const response = await fetch(
+      //   `https://school-management-backend-2k5j.onrender.com${endpoint}`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ email, password }),
+      //   }
+      // );
+
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email,password}),
+      });
 
       const data = await response.json();
 
@@ -45,7 +53,7 @@ const Login = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", role);
 
-      navigate(role === "admin" ? "/admin-dashboard" : "/");
+      navigate(role === "admin" ? "/dashboard/admin" : "/dashboard/student");
     } catch (error) {
       console.error("Login error:", error);
       alert("An error occurred while logging in.");
@@ -116,14 +124,14 @@ const Login = () => {
                 Login
               </button>
             </form>
-            {role === "student" && (
+            
               <p className="mt-4">
-                Not a student?{" "}
+                Not a {role}?{" "}
                 <Link to="/register" className="text-blue-500">
                   Register here
                 </Link>
               </p>
-            )}
+            
           </>
         )}
       </div>

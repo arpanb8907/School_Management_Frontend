@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaSpinner } from "react-icons/fa"; // Optional spinner icon
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -10,17 +11,27 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('student'); // Default role as 'student'
   const navigate = useNavigate();
+  const [loading,setloading] = useState(false)
+  
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     const userData = { name, fname, contact, address, password, email, role };
 
     try {
       // API endpoint changes based on the role
       const endpoint = role === 'admin' ? '/api/admin/register' : '/api/student/register';
 
-      const response = await fetch(`https://school-management-backend-2k5j.onrender.com${endpoint}`, {
+      // const response = await fetch(`https://school-management-backend-2k5j.onrender.com${endpoint}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(userData),
+      // });
+
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,18 +43,29 @@ const Register = () => {
 
       if (response.status === 201) {
         alert(`${role==='admin'?"Admin" : "Student"} Registration successful`);
+        
         navigate('/login');
       } else {
         alert(data.message);
       }
     } catch (error) {
       console.error('Error during registration:', error);
+    }finally{
+      setloading(false)
     }
   };
 
   return (
     <div className="register-form p-4 border border-gray-300 rounded-md w-96 mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-center">
+      {loading ? (
+        // Loader component
+          <div className="flex flex-col items-center">
+            <FaSpinner className="animate-spin text-blue-600 text-4xl mb-4" />
+            <p className="text-gray-700">Registering, please wait...</p>
+          </div>
+      ):(
+        <>
+        <h2 className="text-xl font-semibold mb-4 text-center">
         Register as {role === 'admin' ? 'Admin' : 'Student'}
       </h2>
       <form onSubmit={handleRegister}>
@@ -140,7 +162,10 @@ const Register = () => {
         <Link to="/login" className="text-blue-500">
           Login here
         </Link>
-      </p>
+      </p> 
+      </> 
+      )}
+      
     </div>
   );
 };
