@@ -43,7 +43,7 @@ export default function Homework_admin() {
     };
 
     fetch_studentdetails();
-  }, [students]);
+  },[]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
