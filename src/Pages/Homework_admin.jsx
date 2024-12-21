@@ -24,9 +24,11 @@ export default function Homework_admin() {
     const fetch_studentdetails = async () => {
       //console.log("Hii")
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/student/homework"
-        );
+        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework");
+
+        // const response = await axios.get(
+        //   "http://localhost:5000/api/student/homework"
+        // );
 
         if (response.status !== 200) {
           alert("Server error");
@@ -41,7 +43,7 @@ export default function Homework_admin() {
     };
 
     fetch_studentdetails();
-  }, []);
+  }, [students]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -72,10 +74,15 @@ export default function Homework_admin() {
     const home_work_data = { selectedStudent, subject, submissionDate, status };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/student/homework/assign",
+
+      const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework/assign",
         home_work_data
       );
+
+      // const response = await axios.post(
+      //   "http://localhost:5000/api/student/homework/assign",
+      //   home_work_data
+      // );
       console.log(response.status);
       if (response.status === 201) {
         alert("Homework is added");
