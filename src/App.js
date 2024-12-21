@@ -23,12 +23,16 @@ const App = () => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    if (!token) {
+    const publicPaths = ["/login", "/register"];
+
+    if (!token && !publicPaths.includes(window.location.pathname)) {
+      // If no token and not on public page, redirect to /login
       navigate("/login");
-    } else {
-      if (role === "admin") {
+    } else if (token) {
+      // If token exists, navigate based on role
+      if (role === "admin" && window.location.pathname !== "/dashboard/admin") {
         navigate("/dashboard/admin");
-      } else {
+      } else if (role !== "admin" && window.location.pathname !== "/dashboard/student") {
         navigate("/dashboard/student");
       }
     }
@@ -43,8 +47,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/student" element={<Student_Dashboard />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/Homework" element={<Homework />} />
           <Route path="/ClassList" element={<ClassList />} />
           <Route path="/dashboard/admin" element={<Homework_admin />} />
