@@ -75,7 +75,7 @@ export default function Homework_admin() {
 
     try {
 
-      const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework/assign",
+      const response = await axios.post("https://school-management-backend-2k5j.onrender.com/api/student/homework/assign",
         home_work_data
       );
 
