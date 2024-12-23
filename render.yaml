@@ -1,0 +1,8 @@
+static_site:
+  name: school_management_portal
+  env: static
+  buildCommand: npm run build
+  staticPublishPath: build
+  routes:
+    - source: /*
+      destination: /index.html
