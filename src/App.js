@@ -24,8 +24,8 @@ const App = () => {
     const role = localStorage.getItem("role");
 
     const publicPaths = ["/login", "/register"];
-
-    if (!token && !publicPaths.includes(window.location.pathname)) {
+    //&& !publicPaths.includes(window.location.pathname)
+    if (!token ) {
       // If no token and not on public page, redirect to /login
       navigate("/login");
     } else if (token) {
