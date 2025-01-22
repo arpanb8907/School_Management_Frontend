@@ -22,7 +22,7 @@ const Home = () => {
               Go to Login
             </button>
             <button
-              onClick={() => window.location.reload()}
+              onClick={() => navigate("/login")}
               className="text-gray-600 border-2 border-gray-600 px-6 py-2 rounded-lg hover:bg-gray-100 transition"
             >
               Reload Page
