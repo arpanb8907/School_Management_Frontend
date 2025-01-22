@@ -11,23 +11,9 @@ const FeeManagement = () => {
 
   useEffect(() => {
     const fetchFeeDetails = async () => {
-      // try {
-      //   const token = localStorage.getItem("token");
-      //   const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/fees/studentFee", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   setFeeDetails(response.data);
-      // } catch (err) {
-      //   setError(err.response?.data?.error || "Failed to fetch fee details.");
-      // }
-
-
-
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/fees/studentFee", {
+        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/fees/studentFee", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,6 +22,20 @@ const FeeManagement = () => {
       } catch (err) {
         setError(err.response?.data?.error || "Failed to fetch fee details.");
       }
+
+
+
+      // try {
+      //   const token = localStorage.getItem("token");
+      //   const response = await axios.get("http://localhost:5000/api/fees/studentFee", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      //   setFeeDetails(response.data);
+      // } catch (err) {
+      //   setError(err.response?.data?.error || "Failed to fetch fee details.");
+      // }
 
     };
 
@@ -64,18 +64,8 @@ const FeeManagement = () => {
   
     try {
       const token = localStorage.getItem("token");
-      // const response = await axios.post(
-      //   "https://school-management-backend-2k5j.onrender.com/api/payments/offline",
-      //   { selectedMonths, offlineDetails },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-
       const response = await axios.post(
-        "http://localhost:5000/api/payments/offline",
+        "https://school-management-backend-2k5j.onrender.com/api/payments/offline",
         { selectedMonths, offlineDetails },
         {
           headers: {
@@ -83,6 +73,16 @@ const FeeManagement = () => {
           },
         }
       );
+
+      // const response = await axios.post(
+      //   "http://localhost:5000/api/payments/offline",
+      //   { selectedMonths, offlineDetails },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
   
       alert("Offline payment recorded successfully!");
       setSelectedMonths([]);
@@ -99,21 +99,8 @@ const FeeManagement = () => {
   const handlePayment = async () => {
     try {
       const token = localStorage.getItem("token");
-      // const response = await axios.post(
-      //   "https://school-management-backend-2k5j.onrender.com/api/payments/process",
-      //   {
-      //     selectedMonths,
-      //     paymentMethod,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-
       const response = await axios.post(
-        "http://localhost:5000/api/payments/process",
+        "https://school-management-backend-2k5j.onrender.com/api/payments/process",
         {
           selectedMonths,
           paymentMethod,
@@ -124,6 +111,19 @@ const FeeManagement = () => {
           },
         }
       );
+
+      // const response = await axios.post(
+      //   "http://localhost:5000/api/payments/process",
+      //   {
+      //     selectedMonths,
+      //     paymentMethod,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
 
       alert(`Payment successful! Receipt ID: ${response.data.receiptId}`);
       setSelectedMonths([]);
