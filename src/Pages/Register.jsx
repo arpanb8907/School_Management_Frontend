@@ -23,21 +23,21 @@ const Register = () => {
       // API endpoint changes based on the role
       const endpoint = role === 'admin' ? '/api/admin/register' : '/api/student/register';
 
-      // const response = await fetch(`https://school-management-backend-2k5j.onrender.com${endpoint}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(userData),
-      // });
-
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`https://school-management-backend-2k5j.onrender.com${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
+
+      // const response = await fetch(`http://localhost:5000${endpoint}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(userData),
+      // });
 
       const data = await response.json();
 
