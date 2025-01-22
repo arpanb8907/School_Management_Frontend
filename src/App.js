@@ -15,29 +15,37 @@ import Footer from "./Components/Footer";
 import Homework from "./Home_Items/Homework";
 import ClassList from "./Home_Items/ClassList";
 import Homework_admin from "./Pages/Homework_admin";
+import ChatWindow from "./Pages/ChatWindow";
 import FeeManagement from "./Pages/FeeManagement";
 
 const App = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const role = localStorage.getItem("role");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-  //   const publicPaths = ["/login", "/register"];
+    const publicPaths = ["/login", "/register"];
+
+    const allowedPaths = [
+      "/dashboard/admin",
+      "/dashboard/student",
+      "/fee-management",
+      "/chatwindow",
+    ];
     
-  //   if (!token  && !publicPaths.includes(window.location.pathname) ) {
-  //     // If no token and not on public page, redirect to /login
-  //     navigate("/login");
-  //   } else if (token) {
-  //     // If token exists, navigate based on role
-  //     if (role === "admin" && window.location.pathname !== "/dashboard/admin") {
-  //       navigate("/dashboard/admin");
-  //     } else if (role !== "admin" && window.location.pathname !== "/dashboard/student") {
-  //       navigate("/dashboard/student");
-  //     }
-  //   }
-  // }, [navigate]);
+    
+    if (token && !allowedPaths.includes(window.location.pathname)) {
+      if (role === "admin") {
+        navigate("/dashboard/admin");
+      } else {
+        navigate("/dashboard/student");
+      }
+    }
+    
+    
+    
+  }, [navigate]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -47,12 +55,13 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path = "/chatwindow" element={<ChatWindow/>}/>
           <Route path="/dashboard/student" element={<Student_Dashboard />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Homework" element={<Homework />} />
-          <Route path="/fee-management" element={<FeeManagement />} />
           <Route path="/ClassList" element={<ClassList />} />
+          <Route path="/fee-management" element={<FeeManagement />} />
           <Route path="/dashboard/admin" element={<Homework_admin />} />
         </Routes>
       </div>

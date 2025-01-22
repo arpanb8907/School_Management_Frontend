@@ -11,9 +11,23 @@ const FeeManagement = () => {
 
   useEffect(() => {
     const fetchFeeDetails = async () => {
+      // try {
+      //   const token = localStorage.getItem("token");
+      //   const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/fees/studentFee", {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      //   setFeeDetails(response.data);
+      // } catch (err) {
+      //   setError(err.response?.data?.error || "Failed to fetch fee details.");
+      // }
+
+
+
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/fees/studentFee", {
+        const response = await axios.get("http://localhost:5000/api/fees/studentFee", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -22,6 +36,7 @@ const FeeManagement = () => {
       } catch (err) {
         setError(err.response?.data?.error || "Failed to fetch fee details.");
       }
+
     };
 
     fetchFeeDetails();
@@ -49,8 +64,18 @@ const FeeManagement = () => {
   
     try {
       const token = localStorage.getItem("token");
+      // const response = await axios.post(
+      //   "https://school-management-backend-2k5j.onrender.com/api/payments/offline",
+      //   { selectedMonths, offlineDetails },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+
       const response = await axios.post(
-        "https://school-management-backend-2k5j.onrender.com/api/payments/offline",
+        "http://localhost:5000/api/payments/offline",
         { selectedMonths, offlineDetails },
         {
           headers: {
@@ -74,8 +99,21 @@ const FeeManagement = () => {
   const handlePayment = async () => {
     try {
       const token = localStorage.getItem("token");
+      // const response = await axios.post(
+      //   "https://school-management-backend-2k5j.onrender.com/api/payments/process",
+      //   {
+      //     selectedMonths,
+      //     paymentMethod,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+
       const response = await axios.post(
-        "https://school-management-backend-2k5j.onrender.com/api/payments/process",
+        "http://localhost:5000/api/payments/process",
         {
           selectedMonths,
           paymentMethod,
@@ -150,7 +188,7 @@ const FeeManagement = () => {
         <button
           className="pay-now"
           disabled={selectedMonths.length === 0}
-          onClick={paymentMethod == "Offline" ? handleOfflinePayment : handlePayment}
+          onClick={paymentMethod === "Offline" ? handleOfflinePayment : handlePayment}
         >
           Pay Now
         </button>

@@ -22,24 +22,24 @@ const Login = () => {
     const endpoint = role === "admin" ? "/api/admin/login" : "/api/student/login";
 
     try {
-      const response = await fetch(
-        `https://school-management-backend-2k5j.onrender.com${endpoint}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      // const response = await fetch(
+      //   `https://school-management-backend-2k5j.onrender.com${endpoint}`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ email, password }),
+      //   }
+      // );
 
-      // const response = await fetch(`http://localhost:5000${endpoint}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({email,password}),
-      // });
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email,password}),
+      });
 
       const data = await response.json();
 
