@@ -24,11 +24,11 @@ export default function Homework_admin() {
     const fetch_studentdetails = async () => {
       //console.log("Hii")
       try {
-        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework");
+        // const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework");
 
-        // const response = await axios.get(
-        //   "http://localhost:5000/api/student/homework"
-        // );
+        const response = await axios.get(
+          "http://localhost:5000/api/student/homework"
+        );
 
         if (response.status !== 200) {
           alert("Server error");

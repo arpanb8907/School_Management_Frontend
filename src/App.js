@@ -15,29 +15,41 @@ import Footer from "./Components/Footer";
 import Homework from "./Home_Items/Homework";
 import ClassList from "./Home_Items/ClassList";
 import Homework_admin from "./Pages/Homework_admin";
-import FeeManagement from "./Pages/FeeManagement";
+import ChatWindow from "./Pages/ChatWindow";
 
 const App = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const role = localStorage.getItem("role");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-  //   const publicPaths = ["/login", "/register"];
+    const publicPaths = ["/login", "/register"];
     
-  //   if (!token  && !publicPaths.includes(window.location.pathname) ) {
-  //     // If no token and not on public page, redirect to /login
-  //     navigate("/login");
-  //   } else if (token) {
-  //     // If token exists, navigate based on role
-  //     if (role === "admin" && window.location.pathname !== "/dashboard/admin") {
-  //       navigate("/dashboard/admin");
-  //     } else if (role !== "admin" && window.location.pathname !== "/dashboard/student") {
-  //       navigate("/dashboard/student");
-  //     }
-  //   }
-  // }, [navigate]);
+    // if (!token  && !publicPaths.includes(window.location.pathname) ) {
+    //   // If no token and not on public page, redirect to /login
+    //   navigate("/login");
+    // } else if (token) {
+    //   // If token exists, navigate based on role
+    //   if (role === "admin" && window.location.pathname !== "/dashboard/admin") {
+    //     navigate("/dashboard/admin");
+    //   } else if (role !== "admin" && window.location.pathname !== "/dashboard/student") {
+    //     navigate("/dashboard/student");
+    //   }
+    // }
+
+    if (!token && !publicPaths.includes(window.location.pathname)) {
+      navigate("/login");
+    } else if (token) {
+      const allowedPaths = ["/dashboard/admin", "/dashboard/student", "/chatwindow"];
+      if (role === "admin" && !allowedPaths.includes(window.location.pathname)) {
+        navigate("/dashboard/admin");
+      } else if (role !== "admin" && !allowedPaths.includes(window.location.pathname)) {
+        navigate("/dashboard/student");
+      }
+    }
+    
+  }, [navigate]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -47,12 +59,13 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path = "/chatwindow" element={<ChatWindow/>}/>
           <Route path="/dashboard/student" element={<Student_Dashboard />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Homework" element={<Homework />} />
-          <Route path="/fee-management" element={<FeeManagement />} />
           <Route path="/ClassList" element={<ClassList />} />
+         
           <Route path="/dashboard/admin" element={<Homework_admin />} />
         </Routes>
       </div>
