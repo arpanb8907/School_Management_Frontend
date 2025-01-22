@@ -11,6 +11,7 @@ export default function Student_Dashboard() {
     { name: "Calendar", icon: "fas fa-calendar", route: "/calendar" },
     { name: "News", icon: "fas fa-newspaper", route: "/news" },
     { name: "Homework", icon: "fas fa-book", route: "/homework" },
+    { name: "Fee", icon: "fa fa-inr", route: "/fee-management" },
     { name: "Exam Result", icon: "fas fa-chart-line", route: "/exam-result" },
     { name: "Settings", icon: "fas fa-cog", route: "/settings" },
     { name: "Configuration", icon: "fas fa-tools", route: "/configuration" },

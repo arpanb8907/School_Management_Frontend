@@ -1,0 +1,180 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+  }
+  
+  .fee-management {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .fee-management h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .fee-management h2,
+  .fee-management h3 {
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .months-list {
+    display: grid;
+    grid-template-columns: 1fr; /* One item per row */
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .month-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .month-item input {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .month-item label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .month-item.paid {
+    background-color: #d4edda;
+    color: #155724;
+    text-decoration: line-through;
+  }
+  
+  .payment-method {
+    margin-top: 20px;
+  }
+  
+  .payment-method select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .total-fee {
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .pay-now {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pay-now:disabled {
+    background-color: #d6d8db;
+    cursor: not-allowed;
+  }
+  
+  .pay-now:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+
+
+  .fee-management {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.fee-details {
+  flex: 2; /* Take more space */
+  padding-right: 20px;
+}
+
+.payment-section {
+  flex: 1; /* Take less space */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.payment-section h3 {
+  margin-top: 0;
+}
+
+.payment-section select,
+.pay-now {
+  width: 100%;
+}
+
+.months-list {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to one column */
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.month-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.month-item.paid {
+  background-color: #d4edda;
+  color: #155724;
+  text-decoration: line-through;
+}
+
+@media screen and (min-width: 768px) {
+  .fee-management {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .months-list {
+    grid-template-columns: 1fr 1fr; /* Two columns on larger screens */
+  }
+
+  .payment-section {
+    margin-left: 20px;
+  }
+}
+
+
+select{
+    padding: 10px 10px;
+}
