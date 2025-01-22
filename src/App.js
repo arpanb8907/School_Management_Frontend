@@ -53,7 +53,7 @@ const App = () => {
       {/* Main content will take all available space */}
       <div className="flex-grow">
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path = "/chatwindow" element={<ChatWindow/>}/>
           <Route path="/dashboard/student" element={<Student_Dashboard />} />
