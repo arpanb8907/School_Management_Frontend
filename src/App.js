@@ -16,6 +16,7 @@ import Homework from "./Home_Items/Homework";
 import ClassList from "./Home_Items/ClassList";
 import Homework_admin from "./Pages/Homework_admin";
 import ChatWindow from "./Pages/ChatWindow";
+import FeeManagement from "./Pages/FeeManagement";
 
 const App = () => {
   const navigate = useNavigate();
@@ -25,29 +26,24 @@ const App = () => {
     const role = localStorage.getItem("role");
 
     const publicPaths = ["/login", "/register"];
-    
-    // if (!token  && !publicPaths.includes(window.location.pathname) ) {
-    //   // If no token and not on public page, redirect to /login
-    //   navigate("/login");
-    // } else if (token) {
-    //   // If token exists, navigate based on role
-    //   if (role === "admin" && window.location.pathname !== "/dashboard/admin") {
-    //     navigate("/dashboard/admin");
-    //   } else if (role !== "admin" && window.location.pathname !== "/dashboard/student") {
-    //     navigate("/dashboard/student");
-    //   }
-    // }
 
-    if (!token && !publicPaths.includes(window.location.pathname)) {
-      navigate("/login");
-    } else if (token) {
-      const allowedPaths = ["/dashboard/admin", "/dashboard/student", "/chatwindow"];
-      if (role === "admin" && !allowedPaths.includes(window.location.pathname)) {
+    const allowedPaths = [
+      "/dashboard/admin",
+      "/dashboard/student",
+      "/fee-management",
+      "/chatwindow",
+    ];
+    
+    
+    if (token && !allowedPaths.includes(window.location.pathname)) {
+      if (role === "admin") {
         navigate("/dashboard/admin");
-      } else if (role !== "admin" && !allowedPaths.includes(window.location.pathname)) {
+      } else {
         navigate("/dashboard/student");
       }
     }
+    
+    
     
   }, [navigate]);
 
@@ -65,7 +61,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/Homework" element={<Homework />} />
           <Route path="/ClassList" element={<ClassList />} />
-         
+          <Route path="/fee-management" element={<FeeManagement />} />
           <Route path="/dashboard/admin" element={<Homework_admin />} />
         </Routes>
       </div>
