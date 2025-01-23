@@ -17,6 +17,7 @@ import ClassList from "./Home_Items/ClassList";
 import Homework_admin from "./Pages/Homework_admin";
 import ChatWindow from "./Pages/ChatWindow";
 import FeeManagement from "./Pages/FeeManagement";
+import FeeManagementAdmin from "./Pages/FeeManagementAdmin";
 
 const App = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const App = () => {
 
     const allowedPaths = [
       "/dashboard/admin",
+      "/dashboard/admin/fee-management",
       "/dashboard/student",
       "/fee-management",
       "/chatwindow",
@@ -63,6 +65,7 @@ const App = () => {
           <Route path="/ClassList" element={<ClassList />} />
           <Route path="/fee-management" element={<FeeManagement />} />
           <Route path="/dashboard/admin" element={<Homework_admin />} />
+          <Route path="/dashboard/admin/fee-management" element={<FeeManagementAdmin />} />
         </Routes>
       </div>
       {/* Footer stays at the bottom */}

@@ -6,7 +6,7 @@ const FeeManagement = () => {
   const [feeDetails, setFeeDetails] = useState(null);
   const [selectedMonths, setSelectedMonths] = useState([]);
   const [totalFee, setTotalFee] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState("Online");
+  const [paymentMethod, setPaymentMethod] = useState("Offline");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -58,8 +58,8 @@ const FeeManagement = () => {
 
   const handleOfflinePayment = async () => {
     const offlineDetails = {
-      receivedBy: prompt("Enter the name of the receiver:"),
-      receiptNumber: prompt("Enter the receipt number:"),
+      receivedBy: "Self",
+      receiptNumber: "098665237",
     };
   
     try {
@@ -88,7 +88,9 @@ const FeeManagement = () => {
       setSelectedMonths([]);
       setFeeDetails((prev) => ({
         ...prev,
-        paymentHistory: response.data.updatedPaymentHistory,
+        paymentStatus: prev.paymentStatus.map((month) =>
+          selectedMonths.includes(month.month) ? { ...month, paid: true } : month
+        ),
       }));
     } catch (err) {
       alert(err.response?.data?.error || "Failed to record offline payment.");
