@@ -9,6 +9,7 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Homework_admin() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,8 @@ export default function Homework_admin() {
   const [submissionDate, setSubmissionDate] = useState("");
   const [status, setStatus] = useState("Pending");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetch_studentdetails = async () => {
@@ -114,6 +117,10 @@ export default function Homework_admin() {
     alert(`Home is added for ${student_name}`)
   }
 
+  const handleStudentClick = (studentId) => {
+    navigate(`/dashboard/admin/fee-management?studentId=${studentId}`);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <main className="flex-grow container mx-auto p-6">
@@ -168,6 +175,12 @@ export default function Homework_admin() {
                     style={{ width: "50%" }}
                   >
                     Action
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left font-medium"
+                    style={{ width: "50%" }}
+                  >
+                    Fee Management
                   </th>
                 </tr>
               </thead>
@@ -269,6 +282,18 @@ export default function Homework_admin() {
                           Reminder
 
                         </button>
+                      </div>
+                    </td>
+                    <td className="border px-6 py-4">
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        <button
+                          className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                          onClick={()=>handleStudentClick(student.id)}
+                          aria-label="Payment"
+                        >
+                          Payment
+                        </button>
+
                       </div>
                     </td>
                   </tr>
