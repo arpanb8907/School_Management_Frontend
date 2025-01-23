@@ -274,14 +274,14 @@ export default function Homework_admin() {
                           Delete
                         </button>
 
-                        <button
+                        {/* <button
                           className="text-white bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition duration-200"
                           onClick={() => handleSendReminder(student.id)}
                           aria-label="Send Reminder"
                         >
                           Reminder
 
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                     <td className="border px-6 py-4">
