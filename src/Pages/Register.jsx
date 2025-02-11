@@ -12,6 +12,11 @@ const Register = () => {
   const [role, setRole] = useState('student'); // Default role as 'student'
   const navigate = useNavigate();
   const [loading,setloading] = useState(false)
+
+  const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_API_URL
+    : process.env.REACT_APP_API_BASE_URL;
   
 
   const handleRegister = async (e) => {
@@ -23,7 +28,7 @@ const Register = () => {
       // API endpoint changes based on the role
       const endpoint = role === 'admin' ? '/api/admin/register' : '/api/student/register';
 
-      const response = await fetch(`https://school-management-backend-2k5j.onrender.com${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,13 +36,7 @@ const Register = () => {
         body: JSON.stringify(userData),
       });
 
-      // const response = await fetch(`http://localhost:5000${endpoint}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(userData),
-      // });
+      
 
       const data = await response.json();
 

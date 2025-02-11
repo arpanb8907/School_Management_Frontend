@@ -4,61 +4,60 @@ import { jwtDecode } from "jwt-decode";
 import { FiMessageSquare } from "react-icons/fi";
 import ChatWindow from "../Pages/ChatWindow";
 import ChatList from "../Pages/ChatList";
+import axios from "axios";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatListOpen, toggleChatList] = useState(false)
+
+
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const[userslist,setUserslist] = useState()
   const unreadmessages = 7;
 
-  const usersMock = [
-    {
-      id: 1,
-      name: "Alan Byrd",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "Really? That's great. We will do it tomorrow.",
-      time: "2:30pm",
-    },
-    {
-      id: 2,
-      name: "Wanda Dean",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "Wowaa, so beautiful. Where did you buy this dress?",
-      time: "11:37am",
-    },
-    {
-      id: 3,
-      name: "Joshua Perez",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "I'll try to answer all of your questions after this...",
-      time: "2:30pm",
-    },
-    {
-      id: 4,
-      name: "2/4/6 Badminton",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "We need to win next game to get a ticket...",
-      time: "2:30pm",
-    },
-    {
-      id: 5,
-      name: "Mr Carey",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "I'll try to answer all of your questions after this...",
-      time: "2:30pm",
-    },
-    {
-      id: 6,
-      name: "Dr Roy",
-      profilePic: "https://via.placeholder.com/40",
-      latestMessage: "I'll try to answer all of your questions after this...",
-      time: "2:30pm",
-    },
-  ];
+  const API_BASE_URL =
+   process.env.NODE_ENV === "production"
+     ? process.env.REACT_APP_PRODUCTION_API_URL
+     : process.env.REACT_APP_API_BASE_URL;
+  
+  const openchatwindow = ()=>{
+    setIsChatOpen(!isChatOpen)
+    toggleChatList(!isChatListOpen)
+  }
+useEffect(()=>{
 
+    const fetch_userlist = async ()=>{
+
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/userslist`)
+
+        if(response.status!==200){
+          alert(`${response.status} no user found`)          
+
+        }
+
+        const formattedUsers = response.data.map(user => ({
+          id: user._id,
+          name: user.name,
+          profilePic: "https://i.pravatar.cc/250?u=mail@ashallendesign.co.uk", // Replace with actual profilePic URL if available
+          latestMessage: "", // Can be populated from another API call
+          time: "Just now", // Placeholder for the latest message time
+        }));
+        console.log(formattedUsers)
+        setUserslist(formattedUsers)
+
+        
+      } catch (error) {
+        console.log(`error while fetching details`)
+      }
+    }
+
+    fetch_userlist();
+},[])
   const token = localStorage.getItem("token");
   let uname = "Guest";
 
@@ -110,7 +109,7 @@ const Navbar = () => {
         {uname !== "Guest" && (
           <li>
             <button
-              onClick={() => setIsChatOpen(!isChatOpen)}
+              onClick={openchatwindow}
               className="relative flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full shadow-md hover:bg-blue-400 hover:text-white hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
               title="Messages"
             >
@@ -162,15 +161,16 @@ const Navbar = () => {
       </div>
 
       {/* Chat List Overlay */}
-      {isChatOpen && (
+      {( isChatListOpen) && (
         <div className="fixed top-16 right-4 w-80 bg-white shadow-lg rounded-lg z-50">
           {!selectedUser ? (
-            <ChatList users={usersMock} onSelectUser={setSelectedUser} CurrentUser = {setCurrentUser} />
+            <ChatList users={userslist} onSelectUser={setSelectedUser} CurrentUser = {setCurrentUser} toggleChatList = {toggleChatList} />
           ) : (
             <ChatWindow
               isChatOpen={true}
               setIsChatOpen={() => setSelectedUser(null)}
               //selectedUser={selectedUser}
+
               currentUser = {currentUser}
             />
           )}

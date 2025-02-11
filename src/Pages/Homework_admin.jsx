@@ -23,15 +23,19 @@ export default function Homework_admin() {
 
   const navigate = useNavigate();
 
+  
+  const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_API_URL
+    : process.env.REACT_APP_API_BASE_URL;
+
   useEffect(() => {
     const fetch_studentdetails = async () => {
       //console.log("Hii")
       try {
-        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/student/homework");
+        const response = await axios.get(`${API_BASE_URL}/api/student/homework`);
 
-        // const response = await axios.get(
-        //   "http://localhost:5000/api/student/homework"
-        // );
+        
 
         if (response.status !== 200) {
           alert("Server error");
@@ -78,14 +82,11 @@ export default function Homework_admin() {
 
     try {
 
-      const response = await axios.post("https://school-management-backend-2k5j.onrender.com/api/student/homework/assign",
-        home_work_data
+      const response = await axios.post(`${API_BASE_URL}/api/student/homework/assign",
+        home_work_data`
       );
 
-      // const response = await axios.post(
-      //   "http://localhost:5000/api/student/homework/assign",
-      //   home_work_data
-      // );
+     
       console.log(response.status);
       if (response.status === 201) {
         alert("Homework is added");
@@ -276,7 +277,7 @@ export default function Homework_admin() {
 
                         {/* <button
                           className="text-white bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition duration-200"
-                          onClick={() => handleSendReminder(student.id)}
+                          onClick={() => handleSendReminder(student.id)}l
                           aria-label="Send Reminder"
                         >
                           Reminder

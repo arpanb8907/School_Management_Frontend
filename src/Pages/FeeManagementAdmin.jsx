@@ -14,14 +14,23 @@ const FeeManagementAdmin = () => {
   const [paymentMethod, setPaymentMethod] = useState("Offline");
   const [error, setError] = useState(null);
 
+  const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_API_URL
+    : process.env.REACT_APP_API_BASE_URL;
+
   useEffect(() => {
     const fetchFeeDetails = async () => {
       try {
-        const response = await axios.get(`https://school-management-backend-2k5j.onrender.com/api/fees/admin/studentFee?studentId=${studentId}`);
-        setFeeDetails(response.data);
+        const response = await axios.get(`${API_BASE_URL}/api/fees/admin/studentFee?studentId=${studentId}`);
+
+        
       } catch (err) {
         setError(err.response?.data?.error || "Failed to fetch fee details.");
       }
+
+
+      
     };
 
     if (studentId) fetchFeeDetails();
@@ -49,10 +58,11 @@ const FeeManagementAdmin = () => {
     
       try {
         const response = await axios.post(
-          `https://school-management-backend-2k5j.onrender.com/api/payments/admin/offline?studentId=${studentId}`,
+          `${API_BASE_URL}/api/payments/admin/offline?studentId=${studentId}`,
           { selectedMonths, offlineDetails },
         );
-    
+        
+        
         alert("Offline payment recorded successfully!");
         setSelectedMonths([]);
         setFeeDetails((prev) => ({
@@ -78,7 +88,7 @@ const FeeManagementAdmin = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "https://school-management-backend-2k5j.onrender.com/api/payments/process",
+          `${API_BASE_URL}/api/payments/process`,
           {
             selectedMonths,
             paymentMethod,
@@ -89,6 +99,8 @@ const FeeManagementAdmin = () => {
             },
           }
         );
+
+        
   
         alert(`Payment successful! Receipt ID: ${response.data.receiptId}`);
         setSelectedMonths([]);
