@@ -9,6 +9,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false); // Loader state
   const navigate = useNavigate();
 
+   // Dynamically determine the base URL based on the environment
+   const API_BASE_URL =
+   process.env.NODE_ENV === "production"
+     ? process.env.REACT_APP_PRODUCTION_API_URL
+     : process.env.REACT_APP_API_BASE_URL;
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -23,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        `https://school-management-backend-2k5j.onrender.com${endpoint}`,
+        `${API_BASE_URL}${endpoint}`,
         {
           method: "POST",
           headers: {
@@ -33,14 +40,7 @@ const Login = () => {
         }
       );
 
-      // const response = await fetch(`http://localhost:5000${endpoint}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({email,password}),
-      // });
-
+      
       const data = await response.json();
 
       if (response.status !== 200) {

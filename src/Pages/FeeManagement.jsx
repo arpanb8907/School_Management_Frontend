@@ -9,11 +9,16 @@ const FeeManagement = () => {
   const [paymentMethod, setPaymentMethod] = useState("Offline");
   const [error, setError] = useState(null);
 
+  const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PRODUCTION_API_URL
+    : process.env.REACT_APP_API_BASE_URL;
+
   useEffect(() => {
     const fetchFeeDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("https://school-management-backend-2k5j.onrender.com/api/fees/studentFee", {
+        const response = await axios.get(`${API_BASE_URL}/api/fees/studentFee`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -25,17 +30,7 @@ const FeeManagement = () => {
 
 
 
-      // try {
-      //   const token = localStorage.getItem("token");
-      //   const response = await axios.get("http://localhost:5000/api/fees/studentFee", {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   setFeeDetails(response.data);
-      // } catch (err) {
-      //   setError(err.response?.data?.error || "Failed to fetch fee details.");
-      // }
+     
 
     };
 
@@ -65,7 +60,7 @@ const FeeManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://school-management-backend-2k5j.onrender.com/api/payments/offline",
+        `${API_BASE_URL}/api/payments/offline`,
         { selectedMonths, offlineDetails },
         {
           headers: {
@@ -74,15 +69,7 @@ const FeeManagement = () => {
         }
       );
 
-      // const response = await axios.post(
-      //   "http://localhost:5000/api/payments/offline",
-      //   { selectedMonths, offlineDetails },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+      
   
       alert("Offline payment recorded successfully!");
       setSelectedMonths([]);
@@ -102,7 +89,7 @@ const FeeManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://school-management-backend-2k5j.onrender.com/api/payments/process",
+        `${API_BASE_URL}/api/payments/process`,
         {
           selectedMonths,
           paymentMethod,
@@ -114,18 +101,7 @@ const FeeManagement = () => {
         }
       );
 
-      // const response = await axios.post(
-      //   "http://localhost:5000/api/payments/process",
-      //   {
-      //     selectedMonths,
-      //     paymentMethod,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+      
 
       alert(`Payment successful! Receipt ID: ${response.data.receiptId}`);
       setSelectedMonths([]);

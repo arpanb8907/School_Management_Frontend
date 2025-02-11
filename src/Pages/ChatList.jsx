@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const ChatList = ({ users, onSelectUser,CurrentUser }) => {
+const ChatList = ({ users, onSelectUser, CurrentUser, toggleChatList }) => {
   const [searchUser, setSearchUser] = useState("");
 
   const handleSearch = (e) => {
     setSearchUser(e.target.value);
   };
-
+  const handlechatlistclosing = (e) => {
+    toggleChatList();
+  };
   const filteredUser = users.filter((user) => {
     return user.name.toLowerCase().includes(searchUser.toLowerCase());
   });
   return (
     <div className="chat-list bg-white shadow-md rounded-lg w-80 h-[500px] flex flex-col">
       {/* Header */}
-      <div className="header bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 text-lg font-semibold">
-        Messages
+      <div className="header bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 text-lg font-semibold flex justify-between items-center text-white rounded-t-lg">
+        <span>Messages</span>
+        <button
+          onClick={handlechatlistclosing}
+          className="text-white hover:text-gray-300"
+        >
+          ✖
+        </button>
       </div>
 
       <div className="relative">
@@ -38,8 +46,8 @@ const ChatList = ({ users, onSelectUser,CurrentUser }) => {
               key={user.id}
               className="flex items-center p-4 hover:bg-gray-100 cursor-pointer"
               onClick={() => {
-                onSelectUser(user)
-                CurrentUser(user)
+                onSelectUser(user);
+                CurrentUser(user);
               }}
             >
               <img
