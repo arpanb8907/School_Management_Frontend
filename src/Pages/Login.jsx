@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}${endpoint}`,
+        `https://school-management-backend-2k5j.onrender.com ${endpoint}`,
         {
           method: "POST",
           headers: {
