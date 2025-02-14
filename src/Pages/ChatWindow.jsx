@@ -1,17 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { io } from "socket.io-client";
+import axios from "axios";
 
-export default function ChatWindow({ isChatOpen, setIsChatOpen,currentUser }) {
+export default function ChatWindow({
+  isChatOpen,
+  setIsChatOpen,
+  currentUser,
+  loggedInuser,
+}) {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    { sender: currentUser.name, text: "Hello!" },
-    { sender: "You", text: "Hi, how can I help you?" },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const API_BASE_URL =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PRODUCTION_API_URL
+      : process.env.REACT_APP_API_BASE_URL;
 
-  const handleSendMessage = () => {
-    //alert(`${currentUser.name}`)
+  const socket = io(`${API_BASE_URL}`);
+
+  useEffect(() => {
+    if (!loggedInuser || !currentUser) return;
+
+    console.log(`${loggedInuser.name} && ${currentUser.name}`);
+
+    const fetch_prev_messages = async () => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/messages?sender=${loggedInuser.name}&receiver=${currentUser.name}`
+        );
+
+        if (response.status !== 200) {
+          alert(`${response.status} no messages found`);
+          return;
+        }
+        console.log(response.data);
+        setMessages(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetch_prev_messages();
+
+    // current logged in user joins the socket for continious event emission
+    socket.emit("joinRoom", loggedInuser.name);
+
+    // also loggedin user will continously listens for event that passes from server
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    return () => {
+      socket.off("receiveMessage"); // Cleanup listener on unmount
+    };
+  }, [currentUser, loggedInuser]);
+
+  const handleSendMessage = async () => {
+    //alert(`${loggedInuser.name}`);
+
     if (message.trim() !== "") {
-      setMessages([...messages, { sender: "You", text: message }]);
-      setMessage(""); // Clear input after sending
+      const newMessage = {
+        sender: loggedInuser.name,
+        receiver: currentUser.name,
+        text: message,
+      };
+
+      try {
+        // sent event to the server via web socket
+        socket.emit("sendMessage", newMessage);
+
+        // save message into the databse via REST API
+
+        const response = await axios.post(
+          `${API_BASE_URL}/api/messages`,
+          newMessage
+        );
+
+        if (response.status === 201) {
+          console.log("Message saved:", response.data);
+          setMessages((prev) => [...prev, response.data]);
+        } else {
+          alert("Unable to sent message check your internet connection");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      setMessage(""); // clear the input after message sending
     }
   };
 
@@ -37,24 +111,24 @@ export default function ChatWindow({ isChatOpen, setIsChatOpen,currentUser }) {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`mb-2 ${msg.sender === "You" ? "text-right" : ""}`}
+              className={`flex mb-2 ${
+                msg.sender === loggedInuser.name
+                  ? "justify-end"
+                  : "justify-start"
+              }`}
             >
-              <span
-                className={`text-sm ${
-                  msg.sender === "You" ? "text-blue-600" : "text-gray-600"
-                }`}
-              >
-                {msg.sender}:
-              </span>
-              <p
+              <div
                 className={`${
-                  msg.sender === "You"
+                  msg.sender === loggedInuser.name
                     ? "bg-sky-500 text-white"
-                    : "bg-gray-200"
-                } rounded-lg inline-block p-2 mt-1 text-sm shadow`}
+                    : "bg-gray-200 text-gray-800"
+                } rounded-lg p-2 text-sm shadow max-w-xs`}
               >
-                {msg.text}
-              </p>
+                <span className="text-xs font-semibold block mb-1">
+                  {msg.sender}
+                </span>
+                <p>{msg.text}</p>
+              </div>
             </div>
           ))}
         </div>

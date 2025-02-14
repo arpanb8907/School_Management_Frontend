@@ -1,0 +1,17 @@
+User A opens the chat window with User B.
+Previous messages are fetched from the backend via API.
+User A sends a message:
+
+The message is sent to the backend via REST API.
+The backend stores the message in the database.
+The backend emits a real-time event using socket.io to User B.
+User B (receiver) gets the message in real time via the socket.on("receiveMessage") event.
+The new message is displayed dynamically in both users' chat windows.
+
+=====================================================================================================
+
+Socket is implemented ✅
+sent message is stored into databse by REST API ✅
+Yet to implement the fetching of older messages which will be handled by REST API ✅
+
+Date : 13/02/2025
