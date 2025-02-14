@@ -9,72 +9,84 @@ import axios from "axios";
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isChatListOpen, toggleChatList] = useState(false)
-
+  const [isChatListOpen, toggleChatList] = useState(false);
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [loggedInuser, setLoggedInuser] = useState(null);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const[userslist,setUserslist] = useState()
+  const [userslist, setUserslist] = useState();
   const unreadmessages = 7;
+  const [uname, setUname] = useState("Guest");
+  const [isloggedIn, setIsloggedIn] = useState(false);
 
   const API_BASE_URL =
-   process.env.NODE_ENV === "production"
-     ? process.env.REACT_APP_PRODUCTION_API_URL
-     : process.env.REACT_APP_API_BASE_URL;
-  
-  const openchatwindow = ()=>{
-    setIsChatOpen(!isChatOpen)
-    toggleChatList(!isChatListOpen)
-  }
-useEffect(()=>{
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_PRODUCTION_API_URL
+      : process.env.REACT_APP_API_BASE_URL;
 
-    const fetch_userlist = async ()=>{
-
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/userslist`)
-
-        if(response.status!==200){
-          alert(`${response.status} no user found`)          
-
-        }
-
-        const formattedUsers = response.data.map(user => ({
-          id: user._id,
-          name: user.name,
-          profilePic: "https://i.pravatar.cc/250?u=mail@ashallendesign.co.uk", // Replace with actual profilePic URL if available
-          latestMessage: "", // Can be populated from another API call
-          time: "Just now", // Placeholder for the latest message time
-        }));
-        console.log(formattedUsers)
-        setUserslist(formattedUsers)
-
-        
-      } catch (error) {
-        console.log(`error while fetching details`)
-      }
-    }
-
-    fetch_userlist();
-},[])
-  const token = localStorage.getItem("token");
-  let uname = "Guest";
-
-  if (token) {
-    let decoded = jwtDecode(token);
-    uname = decoded.username;
-  }
-
-  const user = {
-    name: uname,
-    profilePic: "https://via.placeholder.com/40",
+  const openchatwindow = () => {
+    setIsChatOpen(!isChatOpen);
+    toggleChatList(!isChatListOpen);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log(`User is logged in with username ${decoded.username}`);
+        setUname(decoded.username); // Correctly set the username
+        setIsloggedIn(true);
+      } catch (error) {
+        console.error("Invalid token:", error);
+        setUname("Guest"); // Fallback in case of decoding errors
+      }
+    } else {
+      setUname("Guest");
+      setIsloggedIn(false);
+    }
+  }, [[localStorage.getItem("token")]]);
+
+  useEffect(() => {
+    if (uname !== "Guest") {
+      const fetch_userlist = async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/api/userslist`);
+
+          if (response.status !== 200) {
+            alert(`${response.status} no user found`);
+          }
+
+          const formattedUsers = response.data.map((user) => ({
+            id: user._id,
+            name: user.name,
+            profilePic: "https://i.pravatar.cc/250?u=mail@ashallendesign.co.uk", // Replace with actual profilePic URL if available
+            latestMessage: "", // Can be populated from another API call
+            time: "Just now", // Placeholder for the latest message time
+          }));
+          console.log(formattedUsers);
+          setUserslist(formattedUsers);
+        } catch (error) {
+          console.log(`error while fetching details`);
+        }
+      };
+
+      fetch_userlist();
+      setLoggedInuser({
+        name: uname,
+        profilePic: "https://via.placeholder.com/40",
+      });
+    }
+  }, [uname]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
-    window.location.reload();
+    setIsloggedIn(false)
+    setUname('Guest')
+    //window.location.reload();
   };
 
   // Close the dropdown when clicking outside of it
@@ -132,11 +144,11 @@ useEffect(()=>{
           className="flex items-center space-x-2 focus:outline-none"
         >
           <img
-            src={user.profilePic}
+            src="https://via.placeholder.com/40"
             alt="Profile"
             className="w-10 h-10 rounded-full border-2 border-white"
           />
-          <span className="hidden md:block">{user.name}</span>
+          <span className="hidden md:block">{uname}</span>
         </button>
 
         {isDropdownOpen && (
@@ -161,17 +173,23 @@ useEffect(()=>{
       </div>
 
       {/* Chat List Overlay */}
-      {( isChatListOpen) && (
+      {isChatListOpen && (
         <div className="fixed top-16 right-4 w-80 bg-white shadow-lg rounded-lg z-50">
           {!selectedUser ? (
-            <ChatList users={userslist} onSelectUser={setSelectedUser} CurrentUser = {setCurrentUser} toggleChatList = {toggleChatList} />
+            <ChatList
+              users={userslist}
+              onSelectUser={setSelectedUser}
+              CurrentUser={setCurrentUser}
+              toggleChatList={toggleChatList}
+            />
           ) : (
             <ChatWindow
               isChatOpen={true}
               setIsChatOpen={() => setSelectedUser(null)}
               //selectedUser={selectedUser}
 
-              currentUser = {currentUser}
+              currentUser={currentUser}
+              loggedInuser={loggedInuser}
             />
           )}
         </div>
