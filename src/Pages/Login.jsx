@@ -21,6 +21,7 @@ const Login = () => {
 
     if (!email || !password) {
       alert("Please enter both email and password.");
+      console.log(API_BASE_URL)
       return;
     }
 
@@ -39,6 +40,8 @@ const Login = () => {
           body: JSON.stringify({ email, password }),
         }
       );
+
+      //const response = await axios.post(`${API_BASE_URL}${endpoint}`,)
 
       
       const data = await response.json();
