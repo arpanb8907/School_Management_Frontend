@@ -21,7 +21,7 @@ const Login = () => {
 
     if (!email || !password) {
       alert("Please enter both email and password.");
-      console.log(API_BASE_URL)
+      //console.log(API_BASE_URL)
       return;
     }
 
