@@ -65,7 +65,7 @@ const Login = () => {
       setLoading(false); // Stop loader
     }
   };
-
+  const closeModal = () => setserverDown(false);
   return (
     <>
     {serverDown && (

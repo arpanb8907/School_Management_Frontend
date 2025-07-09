@@ -55,6 +55,7 @@ const Register = () => {
       setloading(false)
     }
   };
+  const closeModal = () => setserverDown(false);
 
   return (
     <>
