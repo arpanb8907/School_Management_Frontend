@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student"); // Default role
   const [loading, setLoading] = useState(false); // Loader state
+  const [serverDown,setserverDown] = useState(false)
   const navigate = useNavigate();
 
    // Dynamically determine the base URL based on the environment
@@ -18,7 +19,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    console.log(API_BASE_URL)
     if (!email || !password) {
       alert("Please enter both email and password.");
       //console.log(API_BASE_URL)
@@ -58,14 +59,33 @@ const Login = () => {
 
       navigate(role === "admin" ? "/dashboard/admin" : "/dashboard/student");
     } catch (error) {
-      console.error("Login error:", error);
-      alert("An error occurred while logging in.");
+      //console.error("Login error:", error);
+      setserverDown(true)
     } finally {
       setLoading(false); // Stop loader
     }
   };
 
   return (
+    <>
+    {serverDown && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
+      <h2 className="text-xl font-bold mb-2 text-red-600">🚧 Server Maintenance</h2>
+      <p className="text-gray-700 mb-4">
+        Our backend is currently under maintenance.<br />
+        Please try logging in after some time.
+      </p>
+      <button
+        onClick={closeModal}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-96">
         {loading ? (
@@ -139,6 +159,7 @@ const Login = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
