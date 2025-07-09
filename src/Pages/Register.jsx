@@ -10,6 +10,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('student'); // Default role as 'student'
+  const[serverDown,setserverDown] = useState(false);
   const navigate = useNavigate();
   const [loading,setloading] = useState(false)
 
@@ -49,12 +50,31 @@ const Register = () => {
       }
     } catch (error) {
       console.error('Error during registration:', error);
+      setserverDown(true)
     }finally{
       setloading(false)
     }
   };
 
   return (
+    <>
+    {serverDown && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
+      <h2 className="text-xl font-bold mb-2 text-red-600">🚧 Server Maintenance</h2>
+      <p className="text-gray-700 mb-4">
+        Our backend is currently under maintenance.<br />
+        Please try logging in after some time.
+      </p>
+      <button
+        onClick={closeModal}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     <div className="register-form p-4 border border-gray-300 rounded-md w-96 mx-auto">
       {loading ? (
         // Loader component
@@ -166,6 +186,7 @@ const Register = () => {
       )}
       
     </div>
+    </>
   );
 };
 
